@@ -1,6 +1,17 @@
 <?php
 
+/*
+| RETIRED — legacy dynamic API dispatch (api_expose / api_bind family).
+| ApiController::api() no longer reads this registry (it let an unauth request
+| invoke any already-loaded class method, CWE-306), so these are INERT no-ops
+| kept only so legacy callers don't fatal. Use explicit routes; do NOT add
+| new api_expose*() calls.
+*/
 
+/**
+ * @deprecated Use an explicit route + controller (routes/api.php) instead of
+ *             dynamic api_expose() dispatch.
+ */
 function api_expose($function_name, $callback = null)
 {
     static $index = ' ';
@@ -16,6 +27,9 @@ function api_expose($function_name, $callback = null)
     }
 }
 
+/**
+ * @deprecated Legacy dynamic API dispatch — use an explicit route + controller instead.
+ */
 function api_expose_admin($function_name, $callback = null)
 {
 
@@ -34,6 +48,9 @@ function api_expose_admin($function_name, $callback = null)
 
 }
 
+/**
+ * @deprecated Legacy dynamic API dispatch — use an explicit route + controller instead.
+ */
 function api_bind($function_name, $callback = false)
 {
     static $mw_api_binds;
@@ -49,6 +66,9 @@ function api_bind($function_name, $callback = false)
     }
 }
 
+/**
+ * @deprecated Legacy dynamic API dispatch — use an explicit route + controller instead.
+ */
 function api_bind_admin($function_name, $callback = false)
 {
     static $mw_api_binds;
@@ -65,6 +85,9 @@ function api_bind_admin($function_name, $callback = false)
 }
 
 
+/**
+ * @deprecated Legacy dynamic API dispatch — use an explicit route + controller instead.
+ */
 function api_bind_user($function_name, $callback = false)
 {
     static $mw_api_binds_user;
@@ -81,6 +104,9 @@ function api_bind_user($function_name, $callback = false)
 }
 
 
+/**
+ * @deprecated Legacy dynamic API dispatch — use an explicit route + controller instead.
+ */
 function api_expose_user($function_name, $callback = null)
 {
     static $index = ' ';

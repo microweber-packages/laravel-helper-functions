@@ -114,45 +114,6 @@ if (!function_exists('hashClosure')) {
 }
 
 
-if (!function_exists('mergeScreenshotParts')) {
-    function mergeScreenshotParts($files, $outputFilename = 'full-screenshot.png')
-    {
-
-        $targetHeight = 0;
-
-        $allImageSizes = [];
-        foreach ($files as $file) {
-            $imageSize = getimagesize($file);
-            $allImageSizes[] = [
-                'file' => $file,
-                'width' => $imageSize[0],
-                'height' => $imageSize[1],
-            ];
-            $targetHeight += $imageSize[1];
-        }
-
-        $targetWidth = $allImageSizes[0]['width'];
-        $targetImage = imagecreatetruecolor($targetWidth, $targetHeight);
-
-        $i = 0;
-        foreach ($allImageSizes as $imageSize) {
-
-            $mergeFile = imagecreatefrompng($imageSize['file']);
-
-            $destinationY = 0;
-            if ($i > 0) {
-                $destinationY = $imageSize['height'] * $i;
-            }
-
-            imagecopymerge($targetImage, $mergeFile, 0, $destinationY, 0, 0, $imageSize['width'], $imageSize['height'], 100);
-            imagedestroy($mergeFile);
-            $i++;
-        }
-
-        imagepng($targetImage, $outputFilename, 8);
-    }
-}
-
 if (!function_exists('sanitize_path')) {
     function sanitize_path($path)
     {
@@ -271,16 +232,27 @@ if (!function_exists('php_can_use_func')) {
 if (!function_exists('autoload_add_namespace')) {
     function autoload_add_namespace($dirname, $namespace)
     {
+
         spl_autoload_register(function ($class) use ($dirname, $namespace) {
+
             $prefix = $namespace;
             $base_dir = $dirname;
             $len = strlen($prefix);
-            if (strncmp($prefix, $class, $len) !== 0) {
+//            if (strncmp($prefix, $class, $len) !== 0) {
+//
+//                return;
+//            }
+            if(!str_starts_with($class, $prefix)){
                 return;
             }
+
+            $namespace = str_replace('/', '\\', $namespace);
+
+
+
             $relative_class = substr($class, $len);
             $file = $base_dir . str_replace('\\', '/', $relative_class) . '.php';
-            if (file_exists($file)) {
+            if (is_file($file)) {
                 require $file;
             }
         });
