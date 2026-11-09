@@ -7,6 +7,12 @@ parameters:
 			path: src/functions/array.php
 
 		-
+			message: '#^Function mb_substr invoked with 4 parameters, 2\-3 required\.$#'
+			identifier: arguments.count
+			count: 1
+			path: src/functions/laravel.php
+
+		-
 			message: '#^PHPDoc tag @param has invalid value \(mixed\)\: Unexpected token "\\n     \* ", expected variable at offset 83 on line 4$#'
 			identifier: phpDoc.parseError
 			count: 1
@@ -17,12 +23,6 @@ parameters:
 			identifier: return.missing
 			count: 1
 			path: src/functions/string.php
-
-		-
-			message: '#^Function reduce_double_slashes not found\.$#'
-			identifier: function.notFound
-			count: 2
-			path: src/functions/url.php
 
 		-
 			message: '#^Function url_segment\(\) should return string\|false but empty return statement found\.$#'
